@@ -70,7 +70,7 @@ spec:
         - /manager
         args:
         - --leader-elect
-        image: controller:latest
+        image: localhost:31896/my-custom-operator:v1.0.3
         name: manager
         securityContext:
           allowPrivilegeEscalation: false

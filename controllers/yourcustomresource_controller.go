@@ -47,9 +47,20 @@ type YourCustomResourceReconciler struct {
 // For more details, check Reconcile and its Result here:
 // - https://pkg.go.dev/sigs.k8s.io/controller-runtime@v0.14.1/pkg/reconcile
 func (r *YourCustomResourceReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Result, error) {
-	_ = log.FromContext(ctx)
+	logger := log.FromContext(ctx)
 
-	// TODO(user): your logic here
+	logger.Info("Reconciling YourCustomResourceXX")
+
+	yourCustomResource := appv1alpha1.YourCustomResource{}
+	if err := r.Get(ctx, req.NamespacedName, &yourCustomResource); err != nil {
+		logger.Error(err, "unable to fetch YourCustomResource")
+		return ctrl.Result{}, client.IgnoreNotFound(err)
+	}
+	//log Foo spec
+	logger.Info("Foo: " + yourCustomResource.Spec.Foo)
+
+	//set Foo status to Running
+	//yourCustomResource.Status.State = "Running"
 
 	return ctrl.Result{}, nil
 }
